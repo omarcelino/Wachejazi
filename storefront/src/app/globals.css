@@ -1,0 +1,138 @@
+@import "tailwindcss";
+
+/*
+  M3 color roles generated from seed #2E6F47 (turf green) via
+  @material/material-color-utilities, SchemeTonalSpot.
+  Regenerate with: npx tsx scripts/generate-theme.mts
+*/
+:root {
+  --md-sys-color-background: #f6fbf3;
+  --md-sys-color-error: #ba1a1a;
+  --md-sys-color-error-container: #ffdad6;
+  --md-sys-color-inverse-on-surface: #edf2eb;
+  --md-sys-color-inverse-primary: #96d5a7;
+  --md-sys-color-inverse-surface: #2c322d;
+  --md-sys-color-on-background: #181d18;
+  --md-sys-color-on-error: #ffffff;
+  --md-sys-color-on-error-container: #93000a;
+  --md-sys-color-on-primary: #ffffff;
+  --md-sys-color-on-primary-container: #11512e;
+  --md-sys-color-on-primary-fixed: #00210e;
+  --md-sys-color-on-primary-fixed-variant: #11512e;
+  --md-sys-color-on-secondary: #ffffff;
+  --md-sys-color-on-secondary-container: #384b3c;
+  --md-sys-color-on-secondary-fixed: #0d1f13;
+  --md-sys-color-on-secondary-fixed-variant: #384b3c;
+  --md-sys-color-on-surface: #181d18;
+  --md-sys-color-on-surface-variant: #414942;
+  --md-sys-color-on-tertiary: #ffffff;
+  --md-sys-color-on-tertiary-container: #214c57;
+  --md-sys-color-on-tertiary-fixed: #001f26;
+  --md-sys-color-on-tertiary-fixed-variant: #214c57;
+  --md-sys-color-outline: #717971;
+  --md-sys-color-outline-variant: #c0c9bf;
+  --md-sys-color-primary: #2e6a44;
+  --md-sys-color-primary-container: #b1f1c1;
+  --md-sys-color-primary-fixed: #b1f1c1;
+  --md-sys-color-primary-fixed-dim: #96d5a7;
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-secondary: #4f6353;
+  --md-sys-color-secondary-container: #d2e8d4;
+  --md-sys-color-secondary-fixed: #d2e8d4;
+  --md-sys-color-secondary-fixed-dim: #b6ccb9;
+  --md-sys-color-shadow: #000000;
+  --md-sys-color-surface: #f6fbf3;
+  --md-sys-color-surface-bright: #f6fbf3;
+  --md-sys-color-surface-container: #eaefe8;
+  --md-sys-color-surface-container-high: #e5eae2;
+  --md-sys-color-surface-container-highest: #dfe4dd;
+  --md-sys-color-surface-container-low: #f0f5ed;
+  --md-sys-color-surface-container-lowest: #ffffff;
+  --md-sys-color-surface-dim: #d6dbd4;
+  --md-sys-color-surface-tint: #2e6a44;
+  --md-sys-color-surface-variant: #dde5db;
+  --md-sys-color-tertiary: #3a646f;
+  --md-sys-color-tertiary-container: #beeaf6;
+  --md-sys-color-tertiary-fixed: #beeaf6;
+  --md-sys-color-tertiary-fixed-dim: #a2ceda;
+
+  --md-ref-typeface-plain: var(--font-roboto-flex), ui-sans-serif, system-ui,
+    sans-serif;
+  --md-ref-typeface-brand: var(--font-roboto-flex), ui-sans-serif, system-ui,
+    sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --md-sys-color-background: #101510;
+    --md-sys-color-error: #ffb4ab;
+    --md-sys-color-error-container: #93000a;
+    --md-sys-color-inverse-on-surface: #2c322d;
+    --md-sys-color-inverse-primary: #2e6a44;
+    --md-sys-color-inverse-surface: #dfe4dd;
+    --md-sys-color-on-background: #dfe4dd;
+    --md-sys-color-on-error: #690005;
+    --md-sys-color-on-error-container: #ffdad6;
+    --md-sys-color-on-primary: #00391c;
+    --md-sys-color-on-primary-container: #b1f1c1;
+    --md-sys-color-on-primary-fixed: #00210e;
+    --md-sys-color-on-primary-fixed-variant: #11512e;
+    --md-sys-color-on-secondary: #223527;
+    --md-sys-color-on-secondary-container: #d2e8d4;
+    --md-sys-color-on-secondary-fixed: #0d1f13;
+    --md-sys-color-on-secondary-fixed-variant: #384b3c;
+    --md-sys-color-on-surface: #dfe4dd;
+    --md-sys-color-on-surface-variant: #c0c9bf;
+    --md-sys-color-on-tertiary: #023640;
+    --md-sys-color-on-tertiary-container: #beeaf6;
+    --md-sys-color-on-tertiary-fixed: #001f26;
+    --md-sys-color-on-tertiary-fixed-variant: #214c57;
+    --md-sys-color-outline: #8b938a;
+    --md-sys-color-outline-variant: #414942;
+    --md-sys-color-primary: #96d5a7;
+    --md-sys-color-primary-container: #11512e;
+    --md-sys-color-primary-fixed: #b1f1c1;
+    --md-sys-color-primary-fixed-dim: #96d5a7;
+    --md-sys-color-scrim: #000000;
+    --md-sys-color-secondary: #b6ccb9;
+    --md-sys-color-secondary-container: #384b3c;
+    --md-sys-color-secondary-fixed: #d2e8d4;
+    --md-sys-color-secondary-fixed-dim: #b6ccb9;
+    --md-sys-color-shadow: #000000;
+    --md-sys-color-surface: #101510;
+    --md-sys-color-surface-bright: #353a35;
+    --md-sys-color-surface-container: #1c211c;
+    --md-sys-color-surface-container-high: #262b27;
+    --md-sys-color-surface-container-highest: #313631;
+    --md-sys-color-surface-container-low: #181d18;
+    --md-sys-color-surface-container-lowest: #0a0f0b;
+    --md-sys-color-surface-dim: #101510;
+    --md-sys-color-surface-tint: #96d5a7;
+    --md-sys-color-surface-variant: #414942;
+    --md-sys-color-tertiary: #a2ceda;
+    --md-sys-color-tertiary-container: #214c57;
+    --md-sys-color-tertiary-fixed: #beeaf6;
+    --md-sys-color-tertiary-fixed-dim: #a2ceda;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--md-sys-color-surface);
+  color: var(--md-sys-color-on-surface);
+  font-family: var(--md-ref-typeface-plain);
+}
+
+md-outlined-button[data-selected="true"] {
+  --md-outlined-button-outline-color: var(--md-sys-color-primary);
+  --md-outlined-button-outline-width: 2px;
+  --md-outlined-button-label-text-color: var(--md-sys-color-primary);
+}
