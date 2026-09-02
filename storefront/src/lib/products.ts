@@ -1,7 +1,10 @@
+export type Audience = "Men" | "Women" | "Kids";
+
 export type Product = {
   slug: string;
   name: string;
   category: string;
+  audiences: Audience[];
   price: string;
   blurb: string;
   description: string;
@@ -15,6 +18,7 @@ export const PRODUCTS: Product[] = [
     slug: "firm-ground-match-boots",
     name: "Firm-Ground Match Boots",
     category: "Football",
+    audiences: ["Men", "Women"],
     price: "KSh 8,500",
     blurb: "Studs built for dry pitches, true to size.",
     description:
@@ -27,6 +31,7 @@ export const PRODUCTS: Product[] = [
     slug: "distance-trainer-running-shoes",
     name: "Distance Trainer Running Shoes",
     category: "Running",
+    audiences: ["Men", "Women"],
     price: "KSh 12,000",
     blurb: "Cushioned for weekly long runs on tarmac.",
     description:
@@ -39,6 +44,7 @@ export const PRODUCTS: Product[] = [
     slug: "adjustable-dumbbell-set-20kg",
     name: "Adjustable Dumbbell Set, 20kg",
     category: "Gym & Training",
+    audiences: ["Men", "Women"],
     price: "KSh 15,000",
     blurb: "One pair, six weight settings, no rack needed.",
     description:
@@ -51,6 +57,7 @@ export const PRODUCTS: Product[] = [
     slug: "home-match-jersey",
     name: "Home Match Jersey",
     category: "Team Kits",
+    audiences: ["Men", "Women"],
     price: "KSh 3,200",
     blurb: "Breathable mesh, printed name and number included.",
     description:
@@ -63,6 +70,7 @@ export const PRODUCTS: Product[] = [
     slug: "grip-socks-3-pack",
     name: "Grip Socks, 3-Pack",
     category: "Accessories",
+    audiences: ["Men", "Women", "Kids"],
     price: "KSh 900",
     blurb: "Stops feet sliding inside the boot mid-match.",
     description:
@@ -75,6 +83,7 @@ export const PRODUCTS: Product[] = [
     slug: "pro-shin-guards",
     name: "Pro Shin Guards",
     category: "Football",
+    audiences: ["Men", "Women", "Kids"],
     price: "KSh 1,200",
     blurb: "Ankle-strap fit, sized for junior and adult legs.",
     description:
@@ -87,6 +96,7 @@ export const PRODUCTS: Product[] = [
     slug: "goalkeeper-gloves",
     name: "Goalkeeper Gloves",
     category: "Football",
+    audiences: ["Men", "Women"],
     price: "KSh 2,500",
     blurb: "Latex palm grip that holds up in wet conditions.",
     description:
@@ -99,6 +109,7 @@ export const PRODUCTS: Product[] = [
     slug: "training-bibs-set-of-10",
     name: "Training Bibs, Set of 10",
     category: "Football",
+    audiences: ["Men", "Women", "Kids"],
     price: "KSh 4,500",
     blurb: "Two colours of five, for splitting up a training scrimmage.",
     description:
@@ -111,6 +122,7 @@ export const PRODUCTS: Product[] = [
     slug: "indoor-court-basketball-shoes",
     name: "Indoor Court Basketball Shoes",
     category: "Basketball",
+    audiences: ["Men", "Women"],
     price: "KSh 9,000",
     blurb: "Grip built for indoor courts, with ankle support for cutting.",
     description:
@@ -123,6 +135,7 @@ export const PRODUCTS: Product[] = [
     slug: "official-size-7-basketball",
     name: "Official Size 7 Basketball",
     category: "Basketball",
+    audiences: ["Men", "Women"],
     price: "KSh 3,500",
     blurb: "Composite leather, grips the same indoors and outdoors.",
     description:
@@ -135,6 +148,7 @@ export const PRODUCTS: Product[] = [
     slug: "reflective-running-shorts",
     name: "Reflective Running Shorts",
     category: "Running",
+    audiences: ["Men", "Women"],
     price: "KSh 1,800",
     blurb: "Built-in liner and a side pocket that actually fits a phone.",
     description:
@@ -147,6 +161,7 @@ export const PRODUCTS: Product[] = [
     slug: "gps-sports-watch",
     name: "GPS Sports Watch",
     category: "Running",
+    audiences: ["Men", "Women"],
     price: "KSh 18,500",
     blurb: "Tracks pace, distance and heart rate for up to 7 days a charge.",
     description:
@@ -159,6 +174,7 @@ export const PRODUCTS: Product[] = [
     slug: "resistance-bands-set",
     name: "Resistance Bands Set",
     category: "Gym & Training",
+    audiences: ["Men", "Women"],
     price: "KSh 2,200",
     blurb: "Five resistance levels plus a door anchor, packs into a gym bag.",
     description:
@@ -171,6 +187,7 @@ export const PRODUCTS: Product[] = [
     slug: "non-slip-yoga-mat",
     name: "Non-Slip Yoga Mat",
     category: "Gym & Training",
+    audiences: ["Men", "Women"],
     price: "KSh 2,800",
     blurb: "6mm thick with a carry strap included.",
     description:
@@ -183,12 +200,208 @@ export const PRODUCTS: Product[] = [
     slug: "away-match-jersey",
     name: "Away Match Jersey",
     category: "Team Kits",
+    audiences: ["Men", "Women"],
     price: "KSh 3,200",
     blurb: "Same breathable mesh as the home kit, away colourway.",
     description:
       "Official-cut away jersey in breathable mesh. Name and number printing included at checkout, ready before match day.",
     sizes: ["S", "M", "L", "XL", "XXL"],
     fitNote: "Cut slim. Order one size up for a relaxed fit.",
+    returnWindowDays: 7,
+  },
+  {
+    slug: "kids-turf-trainers",
+    name: "Kids' Turf Trainers",
+    category: "Football",
+    audiences: ["Kids"],
+    price: "KSh 3,800",
+    blurb: "Rubber studs for astro turf, sized for growing feet.",
+    description:
+      "Junior boot built for artificial turf, with a padded ankle collar and rubber studs that grip without digging in.",
+    sizes: ["28", "30", "32", "34", "36", "38"],
+    fitNote: "Sizes run large to allow for a season of growth — measure feet fresh, not last year's size.",
+    returnWindowDays: 30,
+  },
+  {
+    slug: "junior-home-jersey",
+    name: "Junior Home Jersey",
+    category: "Team Kits",
+    audiences: ["Kids"],
+    price: "KSh 2,200",
+    blurb: "Same home colourway, cut for kids.",
+    description:
+      "The home kit's breathable mesh in junior sizing, with name and number printing included at checkout.",
+    sizes: ["XS (4-5y)", "S (6-7y)", "M (8-9y)", "L (10-11y)", "XL (12-13y)"],
+    fitNote: "Sized by age. Between ages? Size up — it's worn for a full season.",
+    returnWindowDays: 7,
+  },
+  {
+    slug: "city-commuter-bicycle",
+    name: "City Commuter Bicycle",
+    category: "Cycling",
+    audiences: ["Men", "Women"],
+    price: "KSh 32,000",
+    blurb: "21-speed, built for tarmac and light gravel commutes.",
+    description:
+      "A 21-speed drivetrain on a step-through frame, with front and rear reflectors and a rear rack ready for panniers.",
+    sizes: ["Small", "Medium", "Large"],
+    fitNote: "Frame size runs by rider height — Small fits up to 165cm, Medium up to 178cm, Large above that.",
+    returnWindowDays: 14,
+  },
+  {
+    slug: "adult-mountain-bike",
+    name: "Adult Mountain Bike",
+    category: "Cycling",
+    audiences: ["Men", "Women"],
+    price: "KSh 58,000",
+    blurb: "Front suspension and wide-tread tyres for dirt trails.",
+    description:
+      "A front suspension fork and 27-speed drivetrain, with wide-tread tyres built for dirt trails and rocky fire roads.",
+    sizes: ["Medium", "Large"],
+    fitNote: "Runs on the larger side — riders under 165cm usually prefer Medium.",
+    returnWindowDays: 14,
+  },
+  {
+    slug: "kids-bicycle-20-inch",
+    name: "Kids' Bicycle, 20-inch",
+    category: "Cycling",
+    audiences: ["Kids"],
+    price: "KSh 22,500",
+    blurb: "Training wheels included, sized for ages 6–9.",
+    description:
+      "20-inch wheels with removable training wheels, a coaster brake, and a low step-through frame for kids learning to ride.",
+    sizes: [],
+    fitNote: "Sized for a 51–61cm inseam (roughly ages 6–9) — check inseam, not just age.",
+    returnWindowDays: 14,
+  },
+  {
+    slug: "cycling-helmet",
+    name: "Cycling Helmet",
+    category: "Cycling",
+    audiences: ["Men", "Women", "Kids"],
+    price: "KSh 3,200",
+    blurb: "Vented shell with an adjustable rear dial.",
+    description:
+      "A vented shell over an impact-absorbing liner, with a rear dial that adjusts fit without needing to remove the helmet.",
+    sizes: ["S", "M", "L"],
+    fitNote: "Measure head circumference — S fits 52–56cm, M 56–60cm, L 60–64cm.",
+    returnWindowDays: 14,
+  },
+  {
+    slug: "graphite-tennis-racquet",
+    name: "Graphite Tennis Racquet",
+    category: "Tennis & Badminton",
+    audiences: ["Men", "Women"],
+    price: "KSh 6,500",
+    blurb: "Lightweight graphite frame, pre-strung and ready to play.",
+    description:
+      "A lightweight graphite frame strung at the factory, balanced for club-level groundstrokes without feeling head-heavy.",
+    sizes: ["Grip 2", "Grip 3", "Grip 4"],
+    fitNote: "Grip size is handle circumference — Grip 3 fits most adult hands.",
+    returnWindowDays: 14,
+  },
+  {
+    slug: "badminton-racquet-set",
+    name: "Badminton Racquet Set, 2-Pack",
+    category: "Tennis & Badminton",
+    audiences: ["Men", "Women", "Kids"],
+    price: "KSh 2,800",
+    blurb: "Two racquets and three shuttlecocks, ready for a backyard match.",
+    description:
+      "Two aluminium racquets and three feather-look shuttlecocks in a carry sleeve — enough to start a match on arrival.",
+    sizes: [],
+    fitNote: "",
+    returnWindowDays: 14,
+  },
+  {
+    slug: "all-court-tennis-shoes",
+    name: "All-Court Tennis Shoes",
+    category: "Tennis & Badminton",
+    audiences: ["Men", "Women"],
+    price: "KSh 7,500",
+    blurb: "Herringbone outsole grips hard and clay courts alike.",
+    description:
+      "A herringbone outsole pattern built for lateral movement, with reinforced toe caps for court-surface drag.",
+    sizes: ["39", "40", "41", "42", "43", "44"],
+    fitNote: "Runs true to size.",
+    returnWindowDays: 30,
+  },
+  {
+    slug: "official-volleyball",
+    name: "Official Volleyball",
+    category: "Volleyball & Rugby",
+    audiences: ["Men", "Women", "Kids"],
+    price: "KSh 2,800",
+    blurb: "Soft-touch cover, indoor and beach ready.",
+    description:
+      "A soft-touch composite cover that's gentle on the forearms during digs, with consistent flight both indoors and on sand.",
+    sizes: [],
+    fitNote: "",
+    returnWindowDays: 14,
+  },
+  {
+    slug: "rugby-union-ball-size-5",
+    name: "Rugby Union Ball, Size 5",
+    category: "Volleyball & Rugby",
+    audiences: ["Men", "Women"],
+    price: "KSh 3,200",
+    blurb: "Grippy rubber panels for wet-weather matches.",
+    description:
+      "Regulation size 5 match ball with a grippy rubber panel texture that holds up when the pitch turns wet.",
+    sizes: [],
+    fitNote: "",
+    returnWindowDays: 14,
+  },
+  {
+    slug: "rugby-scrum-cap",
+    name: "Rugby Scrum Cap",
+    category: "Volleyball & Rugby",
+    audiences: ["Men", "Women"],
+    price: "KSh 2,400",
+    blurb: "Padded protection that doesn't block peripheral vision.",
+    description:
+      "Low-profile padded panels protect ears and scalp in the scrum without restricting peripheral vision in open play.",
+    sizes: ["S", "M", "L"],
+    fitNote: "Snug is correct — it should compress slightly against the head to stay put.",
+    returnWindowDays: 14,
+  },
+  {
+    slug: "racing-swim-goggles",
+    name: "Racing Swim Goggles",
+    category: "Swimming",
+    audiences: ["Men", "Women", "Kids"],
+    price: "KSh 1,500",
+    blurb: "Anti-fog lenses with a silicone seal.",
+    description:
+      "Anti-fog coated lenses on a low-profile frame, with a silicone gasket that seals without leaving deep marks.",
+    sizes: ["Adult", "Junior"],
+    fitNote: "Junior fits smaller faces — check for a gap-free seal before buying adult size for a child.",
+    returnWindowDays: 14,
+  },
+  {
+    slug: "training-swimsuit",
+    name: "Training Swimsuit",
+    category: "Swimming",
+    audiences: ["Men", "Women"],
+    price: "KSh 3,500",
+    blurb: "Chlorine-resistant fabric holds shape through daily laps.",
+    description:
+      "Chlorine-resistant fabric that resists thinning and fading through daily training laps, not just the occasional swim.",
+    sizes: ["S", "M", "L", "XL"],
+    fitNote: "Should feel snug when dry — it loosens slightly once wet.",
+    returnWindowDays: 14,
+  },
+  {
+    slug: "silicone-swim-cap",
+    name: "Silicone Swim Cap",
+    category: "Swimming",
+    audiences: ["Men", "Women", "Kids"],
+    price: "KSh 800",
+    blurb: "One size, keeps hair out of the water without pulling.",
+    description:
+      "Soft silicone that stretches to fit most head sizes and hair lengths without pulling or pinching at the edges.",
+    sizes: [],
+    fitNote: "",
     returnWindowDays: 7,
   },
 ];
@@ -209,6 +422,10 @@ export const CATEGORIES: Category[] = [
   { name: "Basketball", slug: "basketball", icon: "sports_basketball" },
   { name: "Gym & Training", slug: "gym-training", icon: "fitness_center" },
   { name: "Team Kits", slug: "team-kits", icon: "checkroom" },
+  { name: "Cycling", slug: "cycling", icon: "directions_bike" },
+  { name: "Tennis & Badminton", slug: "tennis-badminton", icon: "sports_tennis" },
+  { name: "Volleyball & Rugby", slug: "volleyball-rugby", icon: "sports_volleyball" },
+  { name: "Swimming", slug: "swimming", icon: "pool" },
   { name: "Accessories", slug: "accessories", icon: "backpack" },
 ];
 
@@ -225,6 +442,33 @@ export function getCategory(slug: string): Category | undefined {
 
 export function getProductsByCategory(categoryName: string): Product[] {
   return PRODUCTS.filter((product) => product.category === categoryName);
+}
+
+export type AudienceInfo = {
+  name: Audience;
+  slug: string;
+  icon: string;
+};
+
+export const AUDIENCES: AudienceInfo[] = [
+  { name: "Men", slug: "men", icon: "man" },
+  { name: "Women", slug: "women", icon: "woman" },
+  { name: "Kids", slug: "kids", icon: "child_care" },
+];
+
+export function getAudiences(): (AudienceInfo & { count: number })[] {
+  return AUDIENCES.map((audience) => ({
+    ...audience,
+    count: PRODUCTS.filter((product) => product.audiences.includes(audience.name)).length,
+  }));
+}
+
+export function getAudience(slug: string): AudienceInfo | undefined {
+  return AUDIENCES.find((audience) => audience.slug === slug);
+}
+
+export function getProductsByAudience(audience: Audience): Product[] {
+  return PRODUCTS.filter((product) => product.audiences.includes(audience));
 }
 
 export function parsePrice(price: string): number {

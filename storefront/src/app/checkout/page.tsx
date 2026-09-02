@@ -2,10 +2,12 @@
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { AnimatePresence, motion } from "motion/react";
 import SiteHeader from "@/components/SiteHeader";
 import BottomNav from "@/components/BottomNav";
 import { formatKSh } from "@/lib/products";
 import { getCartSummary, getArrivalLabel } from "@/lib/cart";
+import { EASE_STANDARD } from "@/lib/motion";
 
 type DeliveryMethod = "doorstep" | "pickup";
 type PaymentMethod = "mpesa" | "card" | "cod";
@@ -170,12 +172,19 @@ export default function CheckoutPage() {
               Cash on delivery
             </RadioRow>
           </div>
-          <p
-            className="mt-3 text-sm"
-            style={{ color: "var(--md-sys-color-on-surface-variant)" }}
-          >
-            {PAYMENT_NOTES[paymentMethod]}
-          </p>
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={paymentMethod}
+              className="mt-3 text-sm"
+              style={{ color: "var(--md-sys-color-on-surface-variant)" }}
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.18, ease: EASE_STANDARD }}
+            >
+              {PAYMENT_NOTES[paymentMethod]}
+            </motion.p>
+          </AnimatePresence>
         </section>
 
         <section className="mt-8 border-t border-[color:var(--md-sys-color-outline-variant)] pt-4">
@@ -199,11 +208,20 @@ export default function CheckoutPage() {
           </dl>
         </section>
 
-        {error && (
-          <p className="mt-4 text-sm" style={{ color: "var(--md-sys-color-error)" }}>
-            {error}
-          </p>
-        )}
+        <AnimatePresence>
+          {error && (
+            <motion.p
+              className="mt-4 text-sm"
+              style={{ color: "var(--md-sys-color-error)" }}
+              initial={{ opacity: 0, y: -4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2, ease: EASE_STANDARD }}
+            >
+              {error}
+            </motion.p>
+          )}
+        </AnimatePresence>
 
         <div className="mt-6">
           <md-filled-button onClick={placeOrder}>Place order</md-filled-button>

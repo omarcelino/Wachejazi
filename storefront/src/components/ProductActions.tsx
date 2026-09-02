@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import type { Product } from "@/lib/products";
+import { EASE_STANDARD } from "@/lib/motion";
 
 export default function ProductActions({ product }: { product: Product }) {
   const hasSizes = product.sizes.length > 0;
@@ -20,25 +22,33 @@ export default function ProductActions({ product }: { product: Product }) {
           </h2>
           <div className="flex flex-wrap gap-2">
             {product.sizes.map((s) => (
-              <md-outlined-button
-                key={s}
-                data-selected={size === s}
-                onClick={() => setSize(s)}
-              >
-                {s}
-              </md-outlined-button>
+              <motion.div key={s} whileTap={{ scale: 0.92 }} className="inline-block">
+                <md-outlined-button data-selected={size === s} onClick={() => setSize(s)}>
+                  {s}
+                </md-outlined-button>
+              </motion.div>
             ))}
           </div>
         </div>
       )}
 
-      <md-filled-button
-        disabled={hasSizes && !size}
-        onClick={() => setAdded(true)}
-      >
-        <md-icon slot="icon">add_shopping_cart</md-icon>
-        {added ? "Added" : "Add to cart"}
-      </md-filled-button>
+      <motion.div whileTap={{ scale: 0.97 }} className="inline-block self-start">
+        <md-filled-button disabled={hasSizes && !size} onClick={() => setAdded(true)}>
+          <md-icon slot="icon">add_shopping_cart</md-icon>
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={added ? "added" : "add"}
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -4 }}
+              transition={{ duration: 0.15, ease: EASE_STANDARD }}
+              style={{ display: "inline-block" }}
+            >
+              {added ? "Added" : "Add to cart"}
+            </motion.span>
+          </AnimatePresence>
+        </md-filled-button>
+      </motion.div>
     </div>
   );
 }

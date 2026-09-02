@@ -60,8 +60,8 @@ export default async function CategoryPage({
         </p>
 
         <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((product) => (
-            <ProductCard key={product.slug} product={product} />
+          {products.map((product, i) => (
+            <ProductCard key={product.slug} product={product} index={i} />
           ))}
         </div>
       </main>

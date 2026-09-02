@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Roboto_Flex } from "next/font/google";
 import MaterialProvider from "@/components/MaterialProvider";
+import MotionProvider from "@/components/MotionProvider";
 import "./globals.css";
 
 const robotoFlex = Roboto_Flex({
@@ -14,17 +15,24 @@ const ICONS = [
   "backpack",
   "check_circle",
   "checkroom",
+  "child_care",
+  "directions_bike",
   "directions_run",
   "fitness_center",
   "home",
   "local_shipping",
+  "man",
   "payments",
   "person",
+  "pool",
   "search",
   "shopping_cart",
   "sports_basketball",
   "sports_soccer",
+  "sports_tennis",
+  "sports_volleyball",
   "storefront",
+  "woman",
 ].join(",");
 
 export const metadata: Metadata = {
@@ -45,7 +53,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
       </head>
       <body className="min-h-full flex flex-col antialiased">
-        <MaterialProvider>{children}</MaterialProvider>
+        <MotionProvider>
+          <MaterialProvider>{children}</MaterialProvider>
+        </MotionProvider>
       </body>
     </html>
   );
