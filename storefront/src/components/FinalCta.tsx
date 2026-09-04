@@ -14,6 +14,7 @@ export default function FinalCta() {
         Find the gear for your next match, run or training session.
       </p>
       <md-filled-button
+        class="h-11"
         href="/shop"
         style={{
           // Default filled-button is primary-on-primary — invert so it's

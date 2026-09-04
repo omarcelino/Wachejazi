@@ -41,8 +41,8 @@ function RadioRow({
   children: React.ReactNode;
 }) {
   return (
-    <label className="flex cursor-pointer items-center gap-3 py-1.5" onClick={onSelect}>
-      <md-radio checked={checked} onChange={onSelect} />
+    <label className="flex min-h-11 cursor-pointer items-center gap-3" onClick={onSelect}>
+      <md-radio class="min-h-11 min-w-11" checked={checked} onChange={onSelect} />
       <span className="text-sm">{children}</span>
     </label>
   );
@@ -117,7 +117,7 @@ export default function CheckoutPageClient() {
             icon="shopping_cart"
             title="Your cart is empty"
             description="Add something to your cart before checking out."
-            action={<md-filled-button href="/shop">Continue shopping</md-filled-button>}
+            action={<md-filled-button class="min-h-11" href="/shop">Continue shopping</md-filled-button>}
           />
         </main>
         <Footer />
@@ -192,6 +192,18 @@ export default function CheckoutPageClient() {
               </RadioRow>
             ))}
           </div>
+          {/* md-radio's role/checked state is owned by its own ElementInternals
+              and doesn't reach the accessibility tree here (confirmed: adding
+              name/aria-label to the element has no effect, and it never shows
+              up via an accessible-role query) — same upstream limitation as
+              md-outlined-button's aria-pressed. This live region gives screen
+              reader users the selection confirmation the component itself
+              can't expose. */}
+          <p aria-live="polite" className="sr-only">
+            {deliveryMethod === "doorstep"
+              ? "Delivery method: Deliver to my address"
+              : `Delivery method: Pick up at ${pickupPoint}`}
+          </p>
 
           <p
             className="mt-3 text-sm"
@@ -239,6 +251,11 @@ export default function CheckoutPageClient() {
               {PAYMENT_NOTES[paymentMethod]}
             </motion.p>
           </AnimatePresence>
+          <p aria-live="polite" className="sr-only">
+            {`Payment method: ${
+              paymentMethod === "mpesa" ? "M-Pesa" : paymentMethod === "card" ? "Card" : "Cash on delivery"
+            }`}
+          </p>
         </section>
 
         <section className="mt-8 border-t border-[color:var(--md-sys-color-outline-variant)] pt-4">
@@ -277,8 +294,8 @@ export default function CheckoutPageClient() {
           )}
         </AnimatePresence>
 
-        <div className="mt-6">
-          <md-filled-button disabled={submitting} onClick={placeOrder}>
+        <div className="mt-6 flex">
+          <md-filled-button class="min-h-11" disabled={submitting} onClick={placeOrder}>
             {submitting ? "Placing order…" : "Place order"}
           </md-filled-button>
         </div>

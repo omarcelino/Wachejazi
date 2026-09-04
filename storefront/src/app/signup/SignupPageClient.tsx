@@ -63,8 +63,8 @@ export default function SignupPageClient() {
           >
             Your account is ready — orders and saved sizes will show up here.
           </motion.p>
-          <div className="mt-8">
-            <md-filled-button href="/">Start shopping</md-filled-button>
+          <div className="mt-8 flex">
+            <md-filled-button class="min-h-11" href="/">Start shopping</md-filled-button>
           </div>
         </main>
         <Footer />
@@ -110,8 +110,8 @@ export default function SignupPageClient() {
           </motion.p>
         )}
 
-        <div className="mt-6">
-          <md-filled-button onClick={createAccount}>Create account</md-filled-button>
+        <div className="mt-6 flex">
+          <md-filled-button class="min-h-11" onClick={createAccount}>Create account</md-filled-button>
         </div>
 
         <p

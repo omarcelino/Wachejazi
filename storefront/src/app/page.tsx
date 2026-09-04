@@ -47,11 +47,11 @@ export default function Home() {
               in stock and sized for how you actually play.
             </p>
             <div className="flex flex-wrap gap-3">
-              <md-filled-button trailing-icon href="#featured">
+              <md-filled-button class="min-h-11" trailing-icon href="#featured">
                 Shop match day gear
                 <md-icon slot="icon">arrow_forward</md-icon>
               </md-filled-button>
-              <md-outlined-button href="/shop">Explore all gear</md-outlined-button>
+              <md-outlined-button class="min-h-11" href="/shop">Explore all gear</md-outlined-button>
             </div>
           </HeroIntro>
           <HeroVisual />

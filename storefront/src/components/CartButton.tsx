@@ -9,7 +9,11 @@ export default function CartButton() {
 
   return (
     <div className="relative">
-      <md-icon-button href="/cart" aria-label={`Cart, ${count} item${count === 1 ? "" : "s"}`}>
+      <md-icon-button
+        class="min-h-11 min-w-11"
+        href="/cart"
+        aria-label={`Cart, ${count} item${count === 1 ? "" : "s"}`}
+      >
         <md-icon>shopping_cart</md-icon>
       </md-icon-button>
       <AnimatePresence>

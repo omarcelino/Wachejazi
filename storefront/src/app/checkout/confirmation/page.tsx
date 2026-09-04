@@ -30,8 +30,8 @@ export default async function ConfirmationPage({
       <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center px-4 pb-24 pt-16 text-center">
         <OrderSuccess name={name} total={total} method={method ?? null} />
 
-        <div className="mt-10">
-          <md-text-button href="/">Continue browsing</md-text-button>
+        <div className="mt-10 flex">
+          <md-text-button class="min-h-11" href="/">Continue browsing</md-text-button>
         </div>
       </main>
 

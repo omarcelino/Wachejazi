@@ -37,7 +37,7 @@ export default function ShopMenu() {
       <button
         ref={triggerRef}
         type="button"
-        className="flex items-center gap-1 text-sm font-medium"
+        className="flex min-h-11 items-center gap-1 text-sm font-medium"
         aria-expanded={open}
         aria-haspopup="true"
         onClick={() => setOpen((v) => !v)}

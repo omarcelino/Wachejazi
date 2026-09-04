@@ -41,6 +41,7 @@ export default function ProductCard({
       }}
       whileHover={{ y: -3 }}
       whileTap={{ scale: 0.98 }}
+      tabIndex={-1}
     >
       <md-elevated-card class="flex h-full flex-col p-5" style={{ transition: `box-shadow 0.2s ${cssEase(EASE_STANDARD)}` }}>
         <Link href={`/products/${product.slug}`} className="block">
@@ -77,12 +78,12 @@ export default function ProductCard({
             )}
           </span>
           {needsSize ? (
-            <Link href={`/products/${product.slug}`} onClick={handleAdd}>
-              <md-outlined-button>Select size</md-outlined-button>
+            <Link href={`/products/${product.slug}`} onClick={handleAdd} className="inline-flex">
+              <md-outlined-button class="min-h-11 min-w-11">Select size</md-outlined-button>
             </Link>
           ) : (
-            <motion.div whileTap={{ scale: 0.95 }} className="inline-block">
-              <md-filled-button onClick={handleAdd}>
+            <motion.div whileTap={{ scale: 0.95 }} tabIndex={-1} className="inline-flex">
+              <md-filled-button class="min-h-11 min-w-11" onClick={handleAdd}>
                 <md-icon slot="icon">add_shopping_cart</md-icon>
                 Add
               </md-filled-button>
