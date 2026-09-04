@@ -50,7 +50,7 @@ declare module "react" {
       "md-outlined-text-field": MdElement<{
         name?: string;
         label?: string;
-        type?: "text" | "tel" | "email";
+        type?: "text" | "tel" | "email" | "password";
         required?: boolean;
         placeholder?: string;
         value?: string;

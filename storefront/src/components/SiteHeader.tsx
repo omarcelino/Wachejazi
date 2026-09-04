@@ -1,26 +1,37 @@
 import Link from "next/link";
+import DesktopNavLinks from "@/components/DesktopNavLinks";
+import MobileNavDrawer from "@/components/MobileNavDrawer";
+import CartButton from "@/components/CartButton";
 
-export default function SiteHeader({ cartCount = 0 }: { cartCount?: number }) {
+export default function SiteHeader() {
   return (
-    <header className="sticky top-0 z-10 border-b border-[color:var(--md-sys-color-outline-variant)] bg-[color:var(--md-sys-color-surface)]">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-        <Link href="/" className="text-xl font-bold tracking-tight">
-          Wachejazi
-        </Link>
-        <div className="flex items-center gap-1">
-          <md-icon-button aria-label="Search">
-            <md-icon>search</md-icon>
-          </md-icon-button>
-          <div className="relative">
-            <md-icon-button href="/cart" aria-label={`Cart, ${cartCount} items`}>
-              <md-icon>shopping_cart</md-icon>
+    <header className="sticky top-0 z-10">
+      <div
+        className="px-4 py-2 text-center text-xs font-medium sm:text-sm"
+        style={{
+          background: "var(--md-sys-color-primary)",
+          color: "var(--md-sys-color-on-primary)",
+        }}
+      >
+        Free delivery over KSh 12,000 · Order by 2pm for delivery before Saturday
+      </div>
+      <div className="border-b border-[color:var(--md-sys-color-outline-variant)] bg-[color:var(--md-sys-color-surface)]">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
+          <div className="flex items-center gap-2 sm:gap-8">
+            <MobileNavDrawer />
+            <Link href="/" className="text-xl font-bold tracking-tight">
+              Wachejazi
+            </Link>
+            <DesktopNavLinks />
+          </div>
+          <div className="flex items-center gap-1">
+            <md-icon-button aria-label="Search" href="/search">
+              <md-icon>search</md-icon>
             </md-icon-button>
-            {cartCount > 0 && (
-              <md-badge
-                value={String(cartCount)}
-                class="pointer-events-none absolute right-0.5 top-0.5"
-              ></md-badge>
-            )}
+            <md-icon-button href="/signin" aria-label="Account">
+              <md-icon>person</md-icon>
+            </md-icon-button>
+            <CartButton />
           </div>
         </div>
       </div>

@@ -1,5 +1,7 @@
 export type Audience = "Men" | "Women" | "Kids";
 
+export type Badge = "Best Seller" | "New" | "Low Stock";
+
 export type Product = {
   slug: string;
   name: string;
@@ -11,6 +13,13 @@ export type Product = {
   sizes: string[];
   fitNote: string;
   returnWindowDays: number;
+  /** Pre-discount price. When set, `price` is shown as the sale price. */
+  originalPrice?: string;
+  badge?: Badge;
+  /** Only set for badge: "Low Stock" — drives the urgency line on the product page. */
+  stockLeft?: number;
+  /** Slugs of items commonly bought alongside this one, for cross-sell. */
+  pairsWith?: string[];
 };
 
 export const PRODUCTS: Product[] = [
@@ -20,12 +29,14 @@ export const PRODUCTS: Product[] = [
     category: "Football",
     audiences: ["Men", "Women"],
     price: "KSh 8,500",
+    badge: "Best Seller",
     blurb: "Studs built for dry pitches, true to size.",
     description:
       "Conical studs for grip on firm, dry natural turf. Synthetic upper holds its shape after a full season of weekend matches.",
     sizes: ["39", "40", "41", "42", "43", "44", "45"],
     fitNote: "Runs true to size. Between sizes? Size up for thicker socks.",
     returnWindowDays: 14,
+    pairsWith: ["grip-socks-3-pack", "pro-shin-guards"],
   },
   {
     slug: "distance-trainer-running-shoes",
@@ -33,12 +44,14 @@ export const PRODUCTS: Product[] = [
     category: "Running",
     audiences: ["Men", "Women"],
     price: "KSh 12,000",
+    badge: "Best Seller",
     blurb: "Cushioned for weekly long runs on tarmac.",
     description:
       "Midsole tuned for tarmac and packed dirt over 10km-plus runs. Breathable mesh upper for warm-weather training.",
     sizes: ["40", "41", "42", "43", "44", "45", "46"],
     fitNote: "Runs half a size small — most customers order one size up.",
     returnWindowDays: 30,
+    pairsWith: ["reflective-running-shorts", "gps-sports-watch"],
   },
   {
     slug: "adjustable-dumbbell-set-20kg",
@@ -59,12 +72,14 @@ export const PRODUCTS: Product[] = [
     category: "Team Kits",
     audiences: ["Men", "Women"],
     price: "KSh 3,200",
+    badge: "New",
     blurb: "Breathable mesh, printed name and number included.",
     description:
       "Official-cut home jersey in breathable mesh. Name and number printing included at checkout, ready before match day.",
     sizes: ["S", "M", "L", "XL", "XXL"],
     fitNote: "Cut slim. Order one size up for a relaxed fit.",
     returnWindowDays: 7,
+    pairsWith: ["away-match-jersey", "grip-socks-3-pack"],
   },
   {
     slug: "grip-socks-3-pack",
@@ -91,6 +106,7 @@ export const PRODUCTS: Product[] = [
     sizes: ["Junior", "Adult S/M", "Adult L/XL"],
     fitNote: "Measure shin length — sizing runs by leg length, not shoe size.",
     returnWindowDays: 14,
+    pairsWith: ["firm-ground-match-boots", "grip-socks-3-pack"],
   },
   {
     slug: "goalkeeper-gloves",
@@ -98,6 +114,7 @@ export const PRODUCTS: Product[] = [
     category: "Football",
     audiences: ["Men", "Women"],
     price: "KSh 2,500",
+    badge: "New",
     blurb: "Latex palm grip that holds up in wet conditions.",
     description:
       "Negative-cut latex palm for a close fit around the ball, with a wrist strap that stays secure through a full match.",
@@ -247,6 +264,7 @@ export const PRODUCTS: Product[] = [
     sizes: ["Small", "Medium", "Large"],
     fitNote: "Frame size runs by rider height — Small fits up to 165cm, Medium up to 178cm, Large above that.",
     returnWindowDays: 14,
+    pairsWith: ["cycling-helmet"],
   },
   {
     slug: "adult-mountain-bike",
@@ -260,6 +278,7 @@ export const PRODUCTS: Product[] = [
     sizes: ["Medium", "Large"],
     fitNote: "Runs on the larger side — riders under 165cm usually prefer Medium.",
     returnWindowDays: 14,
+    pairsWith: ["cycling-helmet"],
   },
   {
     slug: "kids-bicycle-20-inch",
@@ -377,6 +396,7 @@ export const PRODUCTS: Product[] = [
     sizes: ["Adult", "Junior"],
     fitNote: "Junior fits smaller faces — check for a gap-free seal before buying adult size for a child.",
     returnWindowDays: 14,
+    pairsWith: ["training-swimsuit", "silicone-swim-cap"],
   },
   {
     slug: "training-swimsuit",
@@ -410,6 +430,11 @@ export function getProduct(slug: string): Product | undefined {
   return PRODUCTS.find((product) => product.slug === slug);
 }
 
+/** Products explicitly flagged "New" — real merchandising data, not derived/fabricated. */
+export function getNewArrivals(): Product[] {
+  return PRODUCTS.filter((product) => product.badge === "New");
+}
+
 export type Category = {
   name: string;
   slug: string;
@@ -438,6 +463,10 @@ export function getCategories(): (Category & { count: number })[] {
 
 export function getCategory(slug: string): Category | undefined {
   return CATEGORIES.find((category) => category.slug === slug);
+}
+
+export function getCategoryByName(name: string): Category | undefined {
+  return CATEGORIES.find((category) => category.name === name);
 }
 
 export function getProductsByCategory(categoryName: string): Product[] {
@@ -477,4 +506,12 @@ export function parsePrice(price: string): number {
 
 export function formatKSh(amount: number): string {
   return `KSh ${amount.toLocaleString("en-KE")}`;
+}
+
+export function getDiscountPercent(product: Product): number | null {
+  if (!product.originalPrice) return null;
+  const original = parsePrice(product.originalPrice);
+  const current = parsePrice(product.price);
+  if (!original || original <= current) return null;
+  return Math.round((1 - current / original) * 100);
 }
