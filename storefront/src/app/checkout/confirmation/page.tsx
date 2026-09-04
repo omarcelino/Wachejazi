@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
+import Footer from "@/components/Footer";
 import OrderSuccess from "@/components/OrderSuccess";
+
+export const metadata: Metadata = {
+  title: "Order Confirmed",
+  robots: { index: false, follow: false },
+};
 
 const PAYMENT_LABELS: Record<string, string> = {
   mpesa: "M-Pesa",
@@ -18,7 +25,7 @@ export default async function ConfirmationPage({
 
   return (
     <>
-      <SiteHeader cartCount={0} />
+      <SiteHeader />
 
       <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col items-center px-4 pb-24 pt-16 text-center">
         <OrderSuccess name={name} total={total} method={method ?? null} />
@@ -27,6 +34,8 @@ export default async function ConfirmationPage({
           <md-text-button href="/">Continue browsing</md-text-button>
         </div>
       </main>
+
+      <Footer />
     </>
   );
 }

@@ -1,10 +1,14 @@
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import Link from "next/link";
 import type { Metadata } from "next";
 import SiteHeader from "@/components/SiteHeader";
 import BottomNav from "@/components/BottomNav";
-import ProductCard from "@/components/ProductCard";
+import Footer from "@/components/Footer";
+import ProductListing from "@/components/ProductListing";
+import Breadcrumbs from "@/components/ui/Breadcrumbs";
+import { ProductGridSkeleton } from "@/components/ui/Skeleton";
 import { CATEGORIES, getCategory, getProductsByCategory } from "@/lib/products";
+import { breadcrumbJsonLd } from "@/lib/seo";
 
 export function generateStaticParams() {
   return CATEGORIES.map((category) => ({ slug: category.slug }));
@@ -17,8 +21,9 @@ export async function generateMetadata({
   const category = getCategory(slug);
   if (!category) return {};
   return {
-    title: `${category.name} — Wachejazi`,
+    title: category.name,
     description: `${category.name} gear in stock on Wachejazi.`,
+    alternates: { canonical: `/category/${category.slug}` },
   };
 }
 
@@ -30,19 +35,22 @@ export default async function CategoryPage({
   if (!category) notFound();
 
   const products = getProductsByCategory(category.name);
+  const breadcrumbItems = [
+    { label: "Home", href: "/" },
+    { label: "All Gear", href: "/shop" },
+    { label: category.name },
+  ];
 
   return (
     <>
-      <SiteHeader cartCount={2} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd(breadcrumbItems)) }}
+      />
+      <SiteHeader />
 
       <main className="mx-auto w-full max-w-6xl flex-1 px-4 pb-24 pt-8">
-        <Link
-          href="/"
-          className="text-sm font-medium"
-          style={{ color: "var(--md-sys-color-primary)" }}
-        >
-          ← All sports
-        </Link>
+        <Breadcrumbs items={breadcrumbItems} />
 
         <div className="mt-4 flex items-center gap-3">
           <md-icon
@@ -52,20 +60,15 @@ export default async function CategoryPage({
           </md-icon>
           <h1 className="text-3xl font-bold tracking-tight">{category.name}</h1>
         </div>
-        <p
-          className="mt-1 text-sm"
-          style={{ color: "var(--md-sys-color-on-surface-variant)" }}
-        >
-          {products.length} item{products.length === 1 ? "" : "s"} in stock
-        </p>
 
-        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((product, i) => (
-            <ProductCard key={product.slug} product={product} index={i} />
-          ))}
+        <div className="mt-6">
+          <Suspense fallback={<ProductGridSkeleton />}>
+            <ProductListing products={products} facets={["audience", "size"]} />
+          </Suspense>
         </div>
       </main>
 
+      <Footer />
       <BottomNav />
     </>
   );

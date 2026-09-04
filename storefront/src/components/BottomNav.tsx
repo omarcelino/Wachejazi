@@ -5,9 +5,10 @@ import { useEffect, useRef } from "react";
 
 const TABS = [
   { label: "Home", icon: "home", href: "/" },
-  { label: "Browse", icon: "storefront", href: "/#catalog" },
+  { label: "Men", icon: "man", href: "/men" },
+  { label: "Women", icon: "woman", href: "/women" },
+  { label: "Kids", icon: "child_care", href: "/kids" },
   { label: "Cart", icon: "shopping_cart", href: "/cart" },
-  { label: "Account", icon: "person", href: null },
 ] as const;
 
 export default function BottomNav() {
@@ -28,7 +29,7 @@ export default function BottomNav() {
     return () => bar.removeEventListener("navigation-bar-activated", onActivate);
   }, [router]);
 
-  const activeIndex = pathname === "/cart" ? 2 : 0;
+  const activeIndex = TABS.findIndex((tab) => tab.href === pathname);
 
   return (
     <md-navigation-bar

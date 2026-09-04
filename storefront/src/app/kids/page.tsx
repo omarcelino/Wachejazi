@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import AudienceCatalog from "@/components/AudienceCatalog";
 
 export const metadata: Metadata = {
-  title: "Kids — Wachejazi",
+  title: "Kids",
   description: "Kids' boots, jerseys and training gear.",
 };
 
