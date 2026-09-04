@@ -1,10 +1,13 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
-import { formatKSh } from "@/lib/products";
+import { formatKSh, parsePrice } from "@/lib/products";
 import { EASE_EMPHASIZED_DECELERATE } from "@/lib/motion";
 
 const STEPS = ["Placed", "Packed", "Out for delivery", "Delivered"];
+
+type LastOrderItem = { slug: string; name: string; size: string; qty: number; price: string };
 
 export default function OrderSuccess({
   name,
@@ -15,6 +18,28 @@ export default function OrderSuccess({
   total: number | null;
   method: string | null;
 }) {
+  const [orderItems, setOrderItems] = useState<LastOrderItem[] | null>(null);
+
+  // sessionStorage isn't available during SSR, so this one-time read-on-mount
+  // is the correct way to adopt it (see react.dev/learn/you-might-not-need-an-effect
+  // — "adopting external data not available during rendering" is an explicit
+  // exception), same as CartProvider's localStorage read. Read once, then
+  // clear — so refreshing or later revisiting this URL never shows a stale,
+  // unrelated order's contents.
+  useEffect(() => {
+    try {
+      const raw = sessionStorage.getItem("wachejazi.lastOrder");
+      if (!raw) return;
+      const parsed: unknown = JSON.parse(raw);
+      const parsedItems = (parsed as { items?: unknown })?.items;
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      if (Array.isArray(parsedItems)) setOrderItems(parsedItems as LastOrderItem[]);
+      sessionStorage.removeItem("wachejazi.lastOrder");
+    } catch {
+      // malformed/missing session data — the item summary is optional
+    }
+  }, []);
+
   return (
     <>
       <motion.div
@@ -46,6 +71,33 @@ export default function OrderSuccess({
         {total !== null ? `${formatKSh(total)} — ` : ""}
         {method ? `paying by ${method}.` : "Confirmation on its way."}
       </motion.p>
+
+      {orderItems && orderItems.length > 0 && (
+        <motion.ul
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.3, ease: EASE_EMPHASIZED_DECELERATE }}
+          className="mt-8 flex w-full max-w-md flex-col gap-3 rounded-2xl border p-4 text-left text-sm"
+          style={{ borderColor: "var(--md-sys-color-outline-variant)" }}
+        >
+          {orderItems.map((item) => (
+            <li
+              key={`${item.slug}-${item.size}`}
+              className="flex items-start justify-between gap-4"
+            >
+              <div>
+                <p className="font-medium leading-snug">{item.name}</p>
+                <p style={{ color: "var(--md-sys-color-on-surface-variant)" }}>
+                  {item.size ? `Size ${item.size} · ` : ""}Qty {item.qty}
+                </p>
+              </div>
+              <p className="whitespace-nowrap font-medium tabular-nums">
+                {formatKSh(parsePrice(item.price) * item.qty)}
+              </p>
+            </li>
+          ))}
+        </motion.ul>
+      )}
 
       <ol className="mt-10 flex w-full max-w-md items-center">
         {STEPS.map((step, index) => (
