@@ -91,7 +91,7 @@ export default function CartSummary({
         </h2>
         <div className="flex flex-col gap-2 sm:flex-row">
           <md-outlined-text-field ref={promoRef} label="Enter code" placeholder="MATCHDAY10" />
-          <md-outlined-button onClick={applyPromo}>Apply</md-outlined-button>
+          <md-outlined-button class="min-h-11 min-w-11" onClick={applyPromo}>Apply</md-outlined-button>
         </div>
         {promoError && (
           <p className="mt-2 text-sm" style={{ color: "var(--md-sys-color-error)" }}>
@@ -127,8 +127,8 @@ export default function CartSummary({
         </div>
       </dl>
 
-      <div>
-        <md-filled-button href="/checkout">Proceed to checkout</md-filled-button>
+      <div className="flex">
+        <md-filled-button class="min-h-11" href="/checkout">Proceed to checkout</md-filled-button>
       </div>
     </div>
   );

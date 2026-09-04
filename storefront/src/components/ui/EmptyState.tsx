@@ -25,7 +25,7 @@ export default function EmptyState({
           {description}
         </p>
       )}
-      {action && <div className="mt-2">{action}</div>}
+      {action && <div className="mt-2 flex">{action}</div>}
     </div>
   );
 }

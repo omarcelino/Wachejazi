@@ -16,19 +16,19 @@ export default function SiteHeader() {
         Free delivery over KSh 12,000 · Order by 2pm for delivery in 1–2 days
       </div>
       <div className="border-b border-[color:var(--md-sys-color-outline-variant)] bg-[color:var(--md-sys-color-surface)]">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">
-          <div className="flex items-center gap-2 sm:gap-8">
+        <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 px-4 py-3 sm:gap-4">
+          <div className="flex items-center gap-1 sm:gap-8">
             <MobileNavDrawer />
             <Link href="/" className="text-xl font-bold tracking-tight">
               Wachejazi
             </Link>
             <DesktopNavLinks />
           </div>
-          <div className="flex items-center gap-1">
-            <md-icon-button aria-label="Search" href="/search">
+          <div className="flex items-center gap-0.5 sm:gap-1">
+            <md-icon-button class="min-h-11 min-w-11" aria-label="Search" href="/search">
               <md-icon>search</md-icon>
             </md-icon-button>
-            <md-icon-button href="/signin" aria-label="Account">
+            <md-icon-button class="min-h-11 min-w-11" href="/signin" aria-label="Account">
               <md-icon>person</md-icon>
             </md-icon-button>
             <CartButton />

@@ -29,7 +29,7 @@ export default function CartPageClient() {
             icon="shopping_cart"
             title="Your cart is empty"
             description="Browse the range and add something for your next match."
-            action={<md-filled-button href="/shop">Continue shopping</md-filled-button>}
+            action={<md-filled-button class="min-h-11" href="/shop">Continue shopping</md-filled-button>}
           />
         ) : (
           <>
@@ -58,6 +58,7 @@ export default function CartPageClient() {
                     )}
                     <div className="mt-2 flex items-center gap-2">
                       <md-icon-button
+                        class="min-h-11 min-w-11"
                         aria-label={`Decrease quantity of ${item.product.name}`}
                         onClick={() => updateQty(item.slug, item.size, item.qty - 1)}
                       >
@@ -67,6 +68,7 @@ export default function CartPageClient() {
                         {item.qty}
                       </span>
                       <md-icon-button
+                        class="min-h-11 min-w-11"
                         aria-label={`Increase quantity of ${item.product.name}`}
                         disabled={item.qty >= 10}
                         onClick={() => updateQty(item.slug, item.size, item.qty + 1)}
@@ -74,6 +76,7 @@ export default function CartPageClient() {
                         <md-icon>add</md-icon>
                       </md-icon-button>
                       <md-icon-button
+                        class="min-h-11 min-w-11"
                         aria-label={`Remove ${item.product.name} from cart`}
                         onClick={() => removeItem(item.slug, item.size)}
                       >

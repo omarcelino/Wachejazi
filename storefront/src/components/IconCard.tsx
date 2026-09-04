@@ -29,6 +29,7 @@ export default function IconCard({
       }}
       whileHover={{ y: -3 }}
       whileTap={{ scale: 0.97 }}
+      tabIndex={-1}
     >
       <Link href={href}>
         <md-elevated-card class="flex flex-col items-center gap-2 px-4 py-6 text-center">

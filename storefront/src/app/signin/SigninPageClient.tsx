@@ -60,8 +60,8 @@ export default function SigninPageClient() {
           >
             Your saved sizes and past orders are ready.
           </motion.p>
-          <div className="mt-8">
-            <md-filled-button href="/">Continue shopping</md-filled-button>
+          <div className="mt-8 flex">
+            <md-filled-button class="min-h-11" href="/">Continue shopping</md-filled-button>
           </div>
         </main>
         <Footer />
@@ -100,8 +100,8 @@ export default function SigninPageClient() {
           </motion.p>
         )}
 
-        <div className="mt-6">
-          <md-filled-button onClick={signIn}>Sign in</md-filled-button>
+        <div className="mt-6 flex">
+          <md-filled-button class="min-h-11" onClick={signIn}>Sign in</md-filled-button>
         </div>
 
         <p
