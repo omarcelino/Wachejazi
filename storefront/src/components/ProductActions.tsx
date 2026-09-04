@@ -13,13 +13,17 @@ export default function ProductActions({ product }: { product: Product }) {
   const [size, setSize] = useState<string | null>(null);
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
+  const [sizeRequired, setSizeRequired] = useState(false);
   const { addItem } = useCart();
   const showToast = useToast();
   const router = useRouter();
   const blocked = hasSizes && !size;
 
   function addToCart() {
-    if (blocked) return;
+    if (blocked) {
+      setSizeRequired(true);
+      return;
+    }
     addItem(product.slug, size ?? "", qty);
     showToast(`Added ${qty > 1 ? `${qty} × ` : ""}${product.name}`, "check_circle");
     setAdded(true);
@@ -27,7 +31,10 @@ export default function ProductActions({ product }: { product: Product }) {
   }
 
   function buyNow() {
-    if (blocked) return;
+    if (blocked) {
+      setSizeRequired(true);
+      return;
+    }
     addItem(product.slug, size ?? "", qty);
     router.push("/checkout");
   }
@@ -53,12 +60,15 @@ export default function ProductActions({ product }: { product: Product }) {
               readers instead of a per-button pressed state. */}
           <div role="group" aria-labelledby="size-label" className="flex flex-wrap gap-2">
             {product.sizes.map((s) => (
-              <motion.div key={s} whileTap={{ scale: 0.92 }} className="inline-flex">
+              <motion.div key={s} whileTap={{ scale: 0.92 }} tabIndex={-1} className="inline-flex">
                 <md-outlined-button
                   aria-label={`Size ${s}`}
                   class="min-h-11 min-w-11"
                   data-selected={size === s}
-                  onClick={() => setSize(s)}
+                  onClick={() => {
+                    setSize(s);
+                    setSizeRequired(false);
+                  }}
                 >
                   {s}
                 </md-outlined-button>
@@ -104,10 +114,26 @@ export default function ProductActions({ product }: { product: Product }) {
         </div>
       </div>
 
+      <AnimatePresence>
+        {sizeRequired && blocked && (
+          <motion.p
+            role="status"
+            initial={{ opacity: 0, y: -4 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2, ease: EASE_STANDARD }}
+            className="text-sm font-medium"
+            style={{ color: "var(--md-sys-color-error)" }}
+          >
+            Select a size to continue.
+          </motion.p>
+        )}
+      </AnimatePresence>
+
       {/* Desktop / inline actions — hidden on mobile in favor of the sticky bar below */}
       <div className="hidden gap-3 sm:flex">
-        <motion.div whileTap={{ scale: 0.97 }} className="inline-flex">
-          <md-filled-button class="min-h-11" disabled={blocked} onClick={addToCart}>
+        <motion.div whileTap={{ scale: 0.97 }} tabIndex={-1} className="inline-flex">
+          <md-filled-button class="min-h-11" onClick={addToCart}>
             <md-icon slot="icon">add_shopping_cart</md-icon>
             <AnimatePresence mode="wait" initial={false}>
               <motion.span
@@ -123,8 +149,8 @@ export default function ProductActions({ product }: { product: Product }) {
             </AnimatePresence>
           </md-filled-button>
         </motion.div>
-        <motion.div whileTap={{ scale: 0.97 }} className="inline-flex">
-          <md-outlined-button class="min-h-11" disabled={blocked} onClick={buyNow}>
+        <motion.div whileTap={{ scale: 0.97 }} tabIndex={-1} className="inline-flex">
+          <md-outlined-button class="min-h-11" onClick={buyNow}>
             Buy now
           </md-outlined-button>
         </motion.div>
@@ -139,12 +165,12 @@ export default function ProductActions({ product }: { product: Product }) {
         }}
       >
         <div className="flex flex-1">
-          <md-outlined-button disabled={blocked} onClick={buyNow} class="min-h-11 w-full">
+          <md-outlined-button onClick={buyNow} class="min-h-11 w-full">
             Buy now
           </md-outlined-button>
         </div>
         <div className="flex flex-1">
-          <md-filled-button disabled={blocked} onClick={addToCart} class="min-h-11 w-full">
+          <md-filled-button onClick={addToCart} class="min-h-11 w-full">
             <md-icon slot="icon">add_shopping_cart</md-icon>
             {added ? "Added" : "Add to cart"}
           </md-filled-button>
