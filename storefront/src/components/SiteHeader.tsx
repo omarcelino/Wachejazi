@@ -13,7 +13,7 @@ export default function SiteHeader() {
           color: "var(--md-sys-color-on-primary)",
         }}
       >
-        Free delivery over KSh 12,000 · Order by 2pm for delivery before Saturday
+        Free delivery over KSh 12,000 · Order by 2pm for delivery in 1–2 days
       </div>
       <div className="border-b border-[color:var(--md-sys-color-outline-variant)] bg-[color:var(--md-sys-color-surface)]">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3">

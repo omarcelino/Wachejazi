@@ -7,16 +7,21 @@ import IconCard from "@/components/IconCard";
 import HeroIntro from "@/components/HeroIntro";
 import HeroVisual from "@/components/HeroVisual";
 import TrustBadges from "@/components/TrustBadges";
+import FaqAccordion from "@/components/FaqAccordion";
+import FinalCta from "@/components/FinalCta";
 import Newsletter from "@/components/Newsletter";
 import SectionHeading from "@/components/ui/SectionHeading";
-import { PRODUCTS, getCategories, getAudiences } from "@/lib/products";
+import { PRODUCTS, getCategories, getAudiences, getNewArrivals } from "@/lib/products";
+import { FAQS } from "@/lib/faq";
 
 const FEATURED_COUNT = 6;
+const HOMEPAGE_FAQ_COUNT = 4;
 
 export default function Home() {
   const categories = getCategories();
   const audiences = getAudiences();
   const featured = PRODUCTS.slice(0, FEATURED_COUNT);
+  const newArrivals = getNewArrivals();
 
   return (
     <>
@@ -29,7 +34,7 @@ export default function Home() {
               className="text-sm font-medium uppercase tracking-wide"
               style={{ color: "var(--md-sys-color-primary)" }}
             >
-              Order by 2pm, arrives before Saturday
+              Order by 2pm for delivery in 1–2 days
             </span>
             <h1 className="max-w-xl text-4xl font-bold leading-tight tracking-tight sm:text-5xl">
               Gear up for your next match, not someday
@@ -46,14 +51,10 @@ export default function Home() {
                 Shop match day gear
                 <md-icon slot="icon">arrow_forward</md-icon>
               </md-filled-button>
-              <md-outlined-button href="/shop">Explore all products</md-outlined-button>
+              <md-outlined-button href="/shop">Explore all gear</md-outlined-button>
             </div>
           </HeroIntro>
           <HeroVisual />
-        </section>
-
-        <section className="pb-8">
-          <TrustBadges />
         </section>
 
         <section className="py-8">
@@ -90,7 +91,7 @@ export default function Home() {
 
         <section id="featured" className="scroll-mt-20 py-8">
           <SectionHeading
-            title="Shop the range"
+            title="Featured Gear"
             action={
               <Link
                 href="/shop"
@@ -106,6 +107,53 @@ export default function Home() {
               <ProductCard key={product.slug} product={product} index={i} />
             ))}
           </div>
+        </section>
+
+        <section className="py-8">
+          <SectionHeading title="Why Wachejazi" />
+          <TrustBadges />
+        </section>
+
+        {newArrivals.length > 0 && (
+          <section className="py-8">
+            <SectionHeading
+              title="New & Noteworthy"
+              action={
+                <Link
+                  href="/new"
+                  className="text-sm font-medium"
+                  style={{ color: "var(--md-sys-color-primary)" }}
+                >
+                  View all →
+                </Link>
+              }
+            />
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {newArrivals.map((product, i) => (
+                <ProductCard key={product.slug} product={product} index={i} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        <section className="py-8">
+          <SectionHeading
+            title="Shopping help"
+            action={
+              <Link
+                href="/faq"
+                className="text-sm font-medium"
+                style={{ color: "var(--md-sys-color-primary)" }}
+              >
+                All FAQs →
+              </Link>
+            }
+          />
+          <FaqAccordion items={FAQS.slice(0, HOMEPAGE_FAQ_COUNT)} />
+        </section>
+
+        <section className="py-8">
+          <FinalCta />
         </section>
 
         <section className="py-8">
