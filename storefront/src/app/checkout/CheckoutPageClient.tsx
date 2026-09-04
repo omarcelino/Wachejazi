@@ -2,19 +2,21 @@
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { AnimatePresence, motion } from "motion/react";
 import SiteHeader from "@/components/SiteHeader";
 import BottomNav from "@/components/BottomNav";
 import Footer from "@/components/Footer";
 import EmptyState from "@/components/ui/EmptyState";
-import { formatKSh } from "@/lib/products";
+import { formatKSh, parsePrice } from "@/lib/products";
 import { getArrivalLabel } from "@/lib/cart";
 import { useCart, useCartSummary } from "@/components/CartProvider";
 import { initiatePayment, type PaymentMethod } from "@/lib/payment";
 import { EASE_STANDARD } from "@/lib/motion";
 
 type DeliveryMethod = "doorstep" | "pickup";
-type TextFieldElement = HTMLElement & { value: string };
+type TextFieldElement = HTMLElement & { value: string; focus: () => void; scrollIntoView: (opts?: ScrollIntoViewOptions) => void };
+type FieldErrors = { name?: string; phone?: string; email?: string; address?: string };
 
 const PICKUP_POINTS = [
   "Kenyatta Avenue, Nairobi CBD",
@@ -62,7 +64,7 @@ export default function CheckoutPageClient() {
   const [deliveryMethod, setDeliveryMethod] = useState<DeliveryMethod>("doorstep");
   const [pickupPoint, setPickupPoint] = useState(PICKUP_POINTS[0]);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("mpesa");
-  const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({});
   const [submitting, setSubmitting] = useState(false);
 
   async function placeOrder() {
@@ -73,30 +75,55 @@ export default function CheckoutPageClient() {
     const email = emailRef.current?.value.trim() ?? "";
     const address = addressRef.current?.value.trim() ?? "";
 
-    if (!fullName) {
-      setError("Add your name to continue.");
-      return;
-    }
+    const errors: FieldErrors = {};
+    if (!fullName) errors.name = "Add your name to continue.";
     if (!PHONE_PATTERN.test(phone)) {
-      setError("Enter a valid Kenyan phone number, e.g. 0712 345 678.");
-      return;
+      errors.phone = "Enter a valid Kenyan phone number, e.g. 0712 345 678.";
     }
     if (email && !EMAIL_PATTERN.test(email)) {
-      setError("That email address doesn't look right.");
-      return;
+      errors.email = "That email address doesn't look right.";
     }
     if (deliveryMethod === "doorstep" && !address) {
-      setError("Add a delivery address, or switch to a pickup point.");
+      errors.address = "Add a delivery address, or switch to a pickup point.";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
+      const firstInvalidRef = errors.name
+        ? nameRef
+        : errors.phone
+          ? phoneRef
+          : errors.email
+            ? emailRef
+            : addressRef;
+      firstInvalidRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      firstInvalidRef.current?.focus();
       return;
     }
 
-    setError(null);
+    setFieldErrors({});
     setSubmitting(true);
 
     // See src/lib/payment.ts — no payment gateway is connected in this build,
     // so this never reports success; the order below is recorded locally
     // regardless, since this checkout has no backend to persist it to either.
     await initiatePayment({ method: paymentMethod, amount: total, phone });
+
+    // Captured only so the confirmation page can show what was actually
+    // ordered — cleared as soon as it's read, so a later unrelated visit
+    // to that URL never shows a stale order's contents.
+    sessionStorage.setItem(
+      "wachejazi.lastOrder",
+      JSON.stringify({
+        items: items.map((item) => ({
+          slug: item.slug,
+          name: item.product.name,
+          size: item.size,
+          qty: item.qty,
+          price: item.product.price,
+        })),
+      }),
+    );
 
     const params = new URLSearchParams({
       name: fullName,
@@ -131,24 +158,41 @@ export default function CheckoutPageClient() {
       <SiteHeader />
 
       <main className="mx-auto w-full max-w-2xl flex-1 px-4 pb-24 pt-8">
-        <h1 className="text-3xl font-bold tracking-tight">Checkout</h1>
+        <Link
+          href="/cart"
+          className="-ml-2 flex min-h-11 w-fit items-center gap-1 rounded-full px-2 text-sm font-medium"
+          style={{ color: "var(--md-sys-color-on-surface-variant)" }}
+        >
+          <md-icon style={{ fontSize: "18px" }}>arrow_back</md-icon>
+          Back to cart
+        </Link>
+        <h1 className="mt-1 text-3xl font-bold tracking-tight">Checkout</h1>
 
         <section className="mt-8">
           <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide">
             Contact
           </h2>
           <div className="flex flex-col gap-4">
-            <md-outlined-text-field ref={nameRef} label="Full name" />
+            <md-outlined-text-field
+              ref={nameRef}
+              label="Full name"
+              error={!!fieldErrors.name}
+              error-text={fieldErrors.name ?? ""}
+            />
             <md-outlined-text-field
               ref={phoneRef}
               label="Phone number"
               type="tel"
               placeholder="07XX XXX XXX"
+              error={!!fieldErrors.phone}
+              error-text={fieldErrors.phone ?? ""}
             />
             <md-outlined-text-field
               ref={emailRef}
               label="Email (optional)"
               type="email"
+              error={!!fieldErrors.email}
+              error-text={fieldErrors.email ?? ""}
             />
           </div>
         </section>
@@ -174,7 +218,12 @@ export default function CheckoutPageClient() {
           </div>
 
           <div className="mt-3" hidden={deliveryMethod !== "doorstep"}>
-            <md-outlined-text-field ref={addressRef} label="Delivery address" />
+            <md-outlined-text-field
+              ref={addressRef}
+              label="Delivery address"
+              error={!!fieldErrors.address}
+              error-text={fieldErrors.address ?? ""}
+            />
           </div>
           <div
             className="mt-3 pl-1"
@@ -259,7 +308,35 @@ export default function CheckoutPageClient() {
         </section>
 
         <section className="mt-8 border-t border-[color:var(--md-sys-color-outline-variant)] pt-4">
-          <dl className="flex flex-col gap-2 text-sm">
+          <div className="mb-3 flex items-center justify-between">
+            <h2 className="text-sm font-semibold uppercase tracking-wide">Order summary</h2>
+            <Link
+              href="/cart"
+              className="text-sm font-medium"
+              style={{ color: "var(--md-sys-color-primary)" }}
+            >
+              Edit cart
+            </Link>
+          </div>
+          <ul className="flex flex-col gap-3">
+            {items.map((item) => (
+              <li
+                key={`${item.slug}-${item.size}`}
+                className="flex items-start justify-between gap-4 text-sm"
+              >
+                <div>
+                  <p className="font-medium leading-snug">{item.product.name}</p>
+                  <p style={{ color: "var(--md-sys-color-on-surface-variant)" }}>
+                    {item.size ? `Size ${item.size} · ` : ""}Qty {item.qty}
+                  </p>
+                </div>
+                <p className="whitespace-nowrap font-medium tabular-nums">
+                  {formatKSh(parsePrice(item.product.price) * item.qty)}
+                </p>
+              </li>
+            ))}
+          </ul>
+          <dl className="mt-4 flex flex-col gap-2 border-t border-[color:var(--md-sys-color-outline-variant)] pt-4 text-sm">
             <div className="flex justify-between">
               <dt style={{ color: "var(--md-sys-color-on-surface-variant)" }}>
                 Subtotal
@@ -279,20 +356,13 @@ export default function CheckoutPageClient() {
           </dl>
         </section>
 
-        <AnimatePresence>
-          {error && (
-            <motion.p
-              className="mt-4 text-sm"
-              style={{ color: "var(--md-sys-color-error)" }}
-              initial={{ opacity: 0, y: -4 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2, ease: EASE_STANDARD }}
-            >
-              {error}
-            </motion.p>
-          )}
-        </AnimatePresence>
+        <p aria-live="assertive" className="sr-only">
+          {Object.keys(fieldErrors).length > 0
+            ? `There ${Object.keys(fieldErrors).length === 1 ? "is" : "are"} ${
+                Object.keys(fieldErrors).length
+              } error${Object.keys(fieldErrors).length === 1 ? "" : "s"} in the form above.`
+            : ""}
+        </p>
 
         <div className="mt-6 flex">
           <md-filled-button class="min-h-11" disabled={submitting} onClick={placeOrder}>

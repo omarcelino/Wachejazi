@@ -54,6 +54,8 @@ declare module "react" {
         required?: boolean;
         placeholder?: string;
         value?: string;
+        error?: boolean;
+        "error-text"?: string;
       }>;
     }
   }
