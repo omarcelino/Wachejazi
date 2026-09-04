@@ -379,11 +379,24 @@ function FilterPanel({
                     {group.label}
                   </p>
                 )}
-                <div className="flex flex-wrap gap-2">
+                {/* md-outlined-button's ElementInternals fully owns its
+                    exposed role/state and doesn't merge an author-supplied
+                    aria-pressed (verified: even a raw setAttribute on the
+                    live element never reaches the accessibility tree) — an
+                    upstream component limitation. The visible outline
+                    (data-selected, styled in globals.css) still shows
+                    selection sighted; the live region below the size
+                    groups covers screen readers instead. */}
+                <div
+                  role="group"
+                  aria-label={`Size${sizeGroups.length > 1 ? ` — ${group.label}` : ""}`}
+                  className="flex flex-wrap gap-2"
+                >
                   {group.sizes.map((size) => (
                     <md-outlined-button
                       key={size}
                       class="min-h-11 min-w-11"
+                      aria-label={`Size ${size}`}
                       data-selected={selectedSizes.includes(size)}
                       onClick={() => onToggleSize(size)}
                     >
@@ -394,6 +407,9 @@ function FilterPanel({
               </div>
             ))}
           </div>
+          <p aria-live="polite" className="sr-only">
+            {selectedSizes.length > 0 ? `Selected sizes: ${selectedSizes.join(", ")}` : ""}
+          </p>
         </FacetGroup>
       )}
 

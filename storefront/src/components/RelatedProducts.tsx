@@ -1,13 +1,19 @@
 import Link from "next/link";
 import { getProduct } from "@/lib/products";
 
-export default function RelatedProducts({ slugs }: { slugs: string[] }) {
+export default function RelatedProducts({
+  slugs,
+  title = "Goes well with this",
+}: {
+  slugs: string[];
+  title?: string;
+}) {
   const products = slugs.map(getProduct).filter((p) => p !== undefined);
   if (products.length === 0) return null;
 
   return (
     <section className="mt-10">
-      <h2 className="mb-4 text-lg font-semibold tracking-tight">Goes well with this</h2>
+      <h2 className="mb-4 text-lg font-semibold tracking-tight">{title}</h2>
       <div className="flex gap-3 overflow-x-auto pb-2">
         {products.map((product) => (
           <Link

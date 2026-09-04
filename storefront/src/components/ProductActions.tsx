@@ -37,20 +37,37 @@ export default function ProductActions({ product }: { product: Product }) {
       {hasSizes && (
         <div>
           <h2
+            id="size-label"
             className="mb-2 text-sm font-medium uppercase tracking-wide"
             style={{ color: "var(--md-sys-color-on-surface-variant)" }}
           >
             Size
           </h2>
-          <div className="flex flex-wrap gap-2">
+          {/* md-outlined-button's ElementInternals fully owns its exposed
+              role/state and doesn't merge an author-supplied aria-pressed or
+              role override (verified: even a raw setAttribute on the live
+              element never reaches the accessibility tree) — an upstream
+              component limitation, not fixable from here. The visible
+              outline (data-selected, styled in globals.css) still shows
+              selection sighted; the live region below covers screen
+              readers instead of a per-button pressed state. */}
+          <div role="group" aria-labelledby="size-label" className="flex flex-wrap gap-2">
             {product.sizes.map((s) => (
-              <motion.div key={s} whileTap={{ scale: 0.92 }} className="inline-block">
-                <md-outlined-button data-selected={size === s} onClick={() => setSize(s)}>
+              <motion.div key={s} whileTap={{ scale: 0.92 }} className="inline-flex">
+                <md-outlined-button
+                  aria-label={`Size ${s}`}
+                  class="min-h-11 min-w-11"
+                  data-selected={size === s}
+                  onClick={() => setSize(s)}
+                >
                   {s}
                 </md-outlined-button>
               </motion.div>
             ))}
           </div>
+          <p aria-live="polite" className="sr-only">
+            {size ? `Size ${size} selected` : ""}
+          </p>
         </div>
       )}
 
@@ -63,14 +80,21 @@ export default function ProductActions({ product }: { product: Product }) {
         </h2>
         <div className="flex items-center gap-3">
           <md-icon-button
+            class="min-h-11 min-w-11"
             aria-label="Decrease quantity"
             disabled={qty <= 1}
             onClick={() => setQty((q) => Math.max(1, q - 1))}
           >
             <md-icon>remove</md-icon>
           </md-icon-button>
-          <span className="w-6 text-center text-base font-semibold tabular-nums">{qty}</span>
+          <span
+            aria-live="polite"
+            className="w-6 text-center text-base font-semibold tabular-nums"
+          >
+            {qty}
+          </span>
           <md-icon-button
+            class="min-h-11 min-w-11"
             aria-label="Increase quantity"
             disabled={qty >= 10}
             onClick={() => setQty((q) => Math.min(10, q + 1))}
@@ -82,8 +106,8 @@ export default function ProductActions({ product }: { product: Product }) {
 
       {/* Desktop / inline actions — hidden on mobile in favor of the sticky bar below */}
       <div className="hidden gap-3 sm:flex">
-        <motion.div whileTap={{ scale: 0.97 }} className="inline-block">
-          <md-filled-button disabled={blocked} onClick={addToCart}>
+        <motion.div whileTap={{ scale: 0.97 }} className="inline-flex">
+          <md-filled-button class="min-h-11" disabled={blocked} onClick={addToCart}>
             <md-icon slot="icon">add_shopping_cart</md-icon>
             <AnimatePresence mode="wait" initial={false}>
               <motion.span
@@ -99,8 +123,8 @@ export default function ProductActions({ product }: { product: Product }) {
             </AnimatePresence>
           </md-filled-button>
         </motion.div>
-        <motion.div whileTap={{ scale: 0.97 }} className="inline-block">
-          <md-outlined-button disabled={blocked} onClick={buyNow}>
+        <motion.div whileTap={{ scale: 0.97 }} className="inline-flex">
+          <md-outlined-button class="min-h-11" disabled={blocked} onClick={buyNow}>
             Buy now
           </md-outlined-button>
         </motion.div>
@@ -114,13 +138,13 @@ export default function ProductActions({ product }: { product: Product }) {
           borderColor: "var(--md-sys-color-outline-variant)",
         }}
       >
-        <div className="flex-1">
-          <md-outlined-button disabled={blocked} onClick={buyNow} class="w-full">
+        <div className="flex flex-1">
+          <md-outlined-button disabled={blocked} onClick={buyNow} class="min-h-11 w-full">
             Buy now
           </md-outlined-button>
         </div>
-        <div className="flex-1">
-          <md-filled-button disabled={blocked} onClick={addToCart} class="w-full">
+        <div className="flex flex-1">
+          <md-filled-button disabled={blocked} onClick={addToCart} class="min-h-11 w-full">
             <md-icon slot="icon">add_shopping_cart</md-icon>
             {added ? "Added" : "Add to cart"}
           </md-filled-button>
