@@ -9,7 +9,13 @@ import TrustBadges from "@/components/TrustBadges";
 import RelatedProducts from "@/components/RelatedProducts";
 import Breadcrumbs from "@/components/ui/Breadcrumbs";
 import EmptyState from "@/components/ui/EmptyState";
-import { PRODUCTS, getProduct, getDiscountPercent, getCategoryByName } from "@/lib/products";
+import {
+  PRODUCTS,
+  getProduct,
+  getDiscountPercent,
+  getCategoryByName,
+  getProductsByCategory,
+} from "@/lib/products";
 import { productJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 
 export function generateStaticParams() {
@@ -44,6 +50,20 @@ export default async function ProductPage({
 
   const percentOff = getDiscountPercent(product);
   const category = getCategoryByName(product.category);
+
+  // Curated cross-sell where it exists; otherwise fall back to real same-
+  // category products rather than showing nothing (7 of 30 products have
+  // a curated pairing — this covers the other 23 with genuine data).
+  const relatedSlugs = product.pairsWith?.length
+    ? product.pairsWith
+    : getProductsByCategory(product.category)
+        .filter((p) => p.slug !== product.slug)
+        .slice(0, 4)
+        .map((p) => p.slug);
+  const relatedTitle = product.pairsWith?.length
+    ? "Goes well with this"
+    : `More in ${product.category}`;
+
   const breadcrumbItems = [
     { label: "Home", href: "/" },
     { label: "All Gear", href: "/shop" },
@@ -172,7 +192,7 @@ export default async function ProductPage({
           />
         </section>
 
-        {product.pairsWith && <RelatedProducts slugs={product.pairsWith} />}
+        <RelatedProducts slugs={relatedSlugs} title={relatedTitle} />
       </main>
 
       <Footer />
